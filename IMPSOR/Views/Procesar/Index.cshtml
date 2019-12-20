@@ -1,0 +1,103 @@
+﻿@using IMPSOR
+@{
+    var pozo = ((Pozo)@ViewBag.pozo);
+
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Pozos/Metodos">Pozos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Completar Cuestionario</li>
+    </ol>
+</nav>
+<row>
+    <div class="col-md-3">Pozo:<b>@pozo.id_pozo</b>&nbsp;<b>@pozo.pozo</b>   </div>
+    <div class="col-md-3">Metodo:<b>@ViewBag.metodo </b>  </div>
+</row>
+<form id="forma" name="forma" method="post">
+    <div>
+        <button type="submit" name="back" id="back" class="btn btn-default pull-left">Regresar</button>
+        
+    </div>
+    <div class="pt-xl-5">
+        <div class="progress row">
+            <div class="progress-bar" style="width:@ViewBag.percent%;"></div>
+        </div>
+        <center class="center font-weight-light">
+
+            @ViewBag.percent %
+        </center>
+    </div>
+    <hr />
+    <div class="row">
+        
+
+        <input name="step" id="step" type="number" class="hidden" value=@ViewBag.step />
+        <input name="resp" id="resp" type="hidden" value=@ViewBag.resp />
+        <input name="page" id="page" type="hidden" value=@ViewBag.page />
+        <input name="seleccion" id="seleccion" type="hidden" value="" />
+        @Html.Hidden("backw", false)
+        
+        
+    </div>
+    @if (Convert.ToInt16(ViewBag.percent) < 100)
+    {<div class="well">
+    @{ var nroPregunta = Convert.ToInt16(@ViewBag.step) + 1;
+    }
+    <center><h5>Pregunta @nroPregunta</h5></center>
+    <center><h3>- @ViewBag.Title ?</h3></center>
+</div>
+        <center class="mt-5">
+            <button type="submit" name="submitresp" id="submitresp" class="btn btn-lg btn-success  col-md-6 m-2" value="Si">Si</button>
+            <button type="submit" name="submitresp" id="submitresp" class="btn btn-lg btn-secondary col-md-6 m-2" value="No">No</button>
+        </center>
+    }
+    else
+    {
+        <center class="mt-5">
+            <button type="submit" name="submitresp" class="btn btn-lg btn-success  col-md-6 m-2" value="Graba">Grabar Cuestionario</button>
+            <button type="submit" name="submitresp" class="btn btn-lg btn-alert  col-md-6 m-2" value="Cancel">Cancelar</button>
+        </center>
+
+    }
+    <div id="divLoading" name="divLoading"><div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div></div>
+</form>
+    <style>
+        #step {
+            display: none;
+        }
+    </style>
+    @section scripts{
+        <script>
+        $(document).ready(function () {
+            $("#backw").val(false);
+            $("#back").click(function () {
+                $("#backw").val(true);
+                $("#step").val(@ViewBag.step);
+            });
+            $("#envia").click(function () {
+                $("#backw").val(false);
+              });
+    setTimeout(onComplete(), 2000);
+    function onComplete() {
+    $("#divLoading").toggle();
+            }
+    $(document).keyup(function (e) {
+        if (e.keyCode == 83) {
+            $("#seleccion").val("Si");
+            $("#submitresp").val("Si");
+            $("#forma").submit();
+            event.preventDefault();
+       
+        }
+          if (e.keyCode == 78) {
+            $("#seleccion").val("No");
+            $("#submitresp").val("No");
+            $("#forma").submit();
+            event.preventDefault();
+        }
+    });
+    });
+        </script>
+    
+    }
+   

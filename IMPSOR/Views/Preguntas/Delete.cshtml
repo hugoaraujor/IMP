@@ -1,0 +1,54 @@
+﻿@model IMPSOR.Pregunta
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Esta Seguro de Borrar el siguiente registro?</h3>
+<div>
+    <h4>Pregunta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+      
+            @Html.Hidden("id",Model.IdCase)
+       
+
+        <dd>
+            @Html.DisplayFor(model => model.Enunciate)
+        </dd>
+
+        <dt>
+            Condicion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Condicioneval)
+
+            @Html.DisplayFor(model => model.operador)
+
+            @Html.DisplayFor(model => model.valor)
+        </dd>
+
+        <dt>
+           % Certeza
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpressionSi)
+        </dd>
+
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-primary" /> |
+            @Html.ActionLink("Anterior", "Index",new { id=Model.Metodo})
+        </div>
+    }
+</div>

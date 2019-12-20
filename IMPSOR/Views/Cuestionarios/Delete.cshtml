@@ -1,0 +1,42 @@
+﻿@model IMPSOR.Cuestionario
+
+@{
+    ViewBag.Title = "Borrar";
+}
+
+<h2>Borrado</h2>
+
+<h3>Esta Seguro de Eliminar este Cuestionario?</h3>
+<div>
+    <h4>Cuestionario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Cuestionario")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cuestionario_name)
+        </dd>
+
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Cuestionario")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Metodo)
+        </dd>
+
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Anterior", "Index")
+        </div>
+    }
+</div>

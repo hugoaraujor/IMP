@@ -1,0 +1,76 @@
+﻿@model IMPSOR.Pregunta
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pregunta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IdCase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IdCase)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Enunciate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Enunciate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Condicioneval)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Condicioneval)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.operador)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.operador)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.valor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpressionSi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpressionSi)
+        </dd>
+
+      
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdQuestion }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

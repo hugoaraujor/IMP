@@ -1,0 +1,84 @@
+﻿@model IEnumerable<IMPSOR.Pregunta>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2><b>@ViewBag.titulo</b></h2>
+
+    <div class="body-container row">
+    
+
+            <a class="btn btn-primary col-md-auto" href="/Cuestionarios/Seleccion" role="button"><i class="fa fa-arrow-left pull-left mr-2 "></i>Anterior</a>
+
+            <a class="btn btn-success pull-right col-md-2" href="/Preguntas/Create/@Html.Raw((@ViewBag.cuestionario).IdCase)" role="button"><i class="fa fa-plus pull-left mr-1"></i>Nueva Pregunta</a>
+
+            <table class="table" style="margin-top:20px;">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Orden")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Comentarios")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Expresion")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Condicion")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Operador")
+                    </th>
+                    <th>
+                        @Html.DisplayName("% Certeza")
+                    </th>
+
+
+
+
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @*@Html.HiddenFor(modelItem => item.idPregunta, new { value = 6 })*@
+                            @Html.DisplayFor(modelItem => item.idPregunta)
+                        </td>
+                        <td class="col-md-3">
+                            @Html.DisplayFor(modelItem => item.Enunciate)
+                        </td>
+
+                        <td class="col-md-1">
+                            @Html.DisplayFor(modelItem => item.Condicioneval)
+                        </td>
+                        <td class="col-md-1">
+                            @Html.DisplayFor(modelItem => item.operador)
+                        </td>
+                        <td class="col-md-1">
+                            @Html.DisplayFor(modelItem => item.valor)
+                        </td>
+                        <td class="col-md-1">
+                            @Html.DisplayFor(modelItem => item.ExpressionSi) %
+                        </td>
+
+
+                        <td class="col-md-1">
+                            @Html.ActionLink("Edita", "Edit", new { id = item.IdQuestion })
+
+
+                        </td>
+                        <td class="col-md-1">
+
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdQuestion })
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+  
+        </div>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<IMPSOR.Cuestionario>
+    @{
+    ViewBag.Title = "";
+    }
+    <h2></h2>
+    @section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#mensajealert').hide();
+            if (`@ViewBag.Mensaje`.length > 0) {
+                $('#mensajealert').show();
+                $('#mensajealert').wrapInner('<icon class="fa fa-info-circle"></icon>&nbsp' + `@ViewBag.Mensaje`);
+
+            }
+            setTimeout(function () {
+
+                $('#mensajealert').hide();
+            }, 2000)
+        });
+    </script>
+    }
+    <p>
+        @Html.ActionLink("Nuevo Cuestionario", "Create", null, new { @class = "btn btn btn-info fa fa-plus" })
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Cuestionario")
+               
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/Preguntas/Index/@item.Metodo" class="fa fa-file text-success">
+                        <span style="color:black;"> @Html.DisplayFor(modelItem => item.Cuestionario_name, new { @class = "cuestionario" })</span>
+                    </a>
+                </td>
+                <td>
+                    @Html.ActionLink(" ", "Edit", "Cuestionarios", new { id = item.IdCase }, new { @class = "btn btn btn-info fa fa-edit" })
+                    @Html.ActionLink(" ", "Delete", "Cuestionarios", new { id = item.IdCase }, new { @class = "btn btn btn-info fa fa-close" })
+                </td>
+            </tr>
+
+        }
+    </table>
+
+    <div id="mensajealert"></div>

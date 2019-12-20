@@ -1,0 +1,339 @@
+﻿@using PagedList.Mvc
+@model  IMPSOR.PozosView
+
+@{
+    ViewBag.Title = "Pozos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<h2></h2>
+
+<div class="report">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Pozos/Metodos">@ViewBag.Title</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.SubTitle</li>
+        </ol>
+    </nav>
+
+    <form id="forma" name="forma" method="post">
+        <div class="row form-row  form-group  col-auto ">
+
+
+            @Html.Label("Campo:", new { @class = "col-md-1 mr-2" })
+            @Html.DropDownListFor(m => m.campo, Model.campos, null, new { @class = "col-md-2 form-control ", id = "campo", name = "campo" })
+
+
+            @Html.Label("Yacimiento:", new { @class = "col-md-1 mr-2 ml-5" })
+            @Html.DropDownListFor(m => m.yacimiento, Model.yacimientos, null, new { @class = "col-md-3 form-control", id = "yacimiento", name = "yacimiento" })
+            @Html.Hidden("flow", 0)
+            @Html.Hidden("metodo", @Model.metodo)
+            <button type="button" onclick="myFunction()"> @Html.Label("  ", new { @class = "fa fa-chevron-circle-down fa-2x col-md-1 icon-lightgray" })</button>
+            <span class="col-md-1 ml-3">
+
+                <button type="submit" name="envia" id="envia" class="btn btn-primary pull-right">Siguiente</button>
+                @*@Html.ActionLink("Siguiente", "SorGraph",null, new { @class = "btn btn-primary pull-right envia" })*@
+            </span>
+
+            <div id="myP" class="row col-md-12 animated shake fadeInDown " style="display:none;visibility: hidden;background-color:floralwhite;border-color:1px gray;height:200px;border-radius:15px;">
+                Datos Yacimiento:
+            </div>
+
+
+        </div>
+
+    </form>
+
+    <table class="table">
+        <tr class="tr-gray">
+            <th>@Html.DisplayName("")</th>
+            <th class="pozoname">@Html.DisplayName("POZO") </th>
+
+            @foreach (var preguntaheader in Model.Preguntas)
+            {
+                <th>@preguntaheader.Enunciate</th>
+            }
+            <th>@Html.DisplayName("SOR")<span class="sub"></span>  </th>
+            <th>@Html.DisplayName("% CONF")</th>
+        </tr>
+        <tr>
+        </tr>
+        @if (Model.Detalle.Any())
+        {
+            foreach (var item in Model.Detalle)
+            {
+                string style = item.estado == "Procesado" ? "Color:Green" : "Color:LightGray";
+                string[] curva = new string[5];
+                if (item.curvas == null)
+                {
+                    curva[0] = "a"; curva[1] = "b"; curva[2] = "s"; curva[3] = "d";
+                    item.curvas = "";
+                }
+                if (item.curvas != "")
+                { curva = (item.curvas).Split(','); }
+
+
+
+
+    <tr>
+        <td>
+            @{
+                var testc = item.GetType().GetProperty("sor" + Model.metodo.ToString()).GetValue(item, null);
+                var confr = item.GetType().GetProperty("Confiabilidad" + Model.metodo.ToString()).GetValue(item, null);
+                var answers = item.GetType().GetProperty("RespuestasCuestionario" + Model.metodo.ToString()).GetValue(item, null);
+            }
+
+      
+            @if (@item.sormean1 != null)
+            {
+                @Html.CheckBoxFor(modelItem => item.selected, new { @class = "checkboxwell" })
+            }
+        </td>
+        <td class="pozoname" style="width:300px;max-width:300px;">
+            @if (@item.sormean1 != null)
+            {<a href="#" data-toggle="modal" data-target="#myModal-@item.id_pozo">@Html.DisplayFor(modelItem => item.pozo)</a>
+            //-@item.id_pozo
+        }
+        else
+        {@Html.DisplayFor(modelItem => item.pozo)
+    }
+        </td>
+        <script>
+                var n=@Html.Raw(@answers);
+                for (var i in n) {
+                    document.write("<td>"+ (n[i].resp=='True' ? "Si":"No")+ "</td>");
+                }
+        </script>
+
+        <td>@testc </td>
+        @*@Html.DisplayFor(modelItem => item.sor)*@
+        @if (@confr != null)
+        {
+            <td>@confr %   </td>
+        }
+        else
+        {
+            <td>@confr %</td>
+        }
+    </tr>
+            }
+        }
+
+
+    </table>
+    <center>
+        <div class="pagination">
+            @Html.PagedListPager(Model.Detalle, page => Url.Action("Index", new { page, campo = Model.campo, yacimiento = Model.yacimiento }))
+        </div>
+
+    </center>
+
+
+
+
+    @if (Model.Detalle.Any())
+    {
+        foreach (var item in Model.Detalle)
+        {
+            if (@item.sormean1 > 0 && @item.sormean1 != null)
+            {
+                string[] curva = new string[5];
+                {
+                    if (item.curvas == null)
+                    {
+                        curva[0] = "a"; curva[1] = "b"; curva[2] = "s"; curva[3] = "d";
+                        item.curvas = "";
+                    }
+                    if (item.curvas != "")
+                    { curva = (item.curvas).Split(','); }
+
+                    <!-- Modal -->
+
+                    <div class="modal fade" id="myModal-@item.id_pozo" name="myModal-@item.id_pozo" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title"><b>@Html.DisplayFor(modelItem => item.pozo)</b></h4>
+                                    <button type="button" class="close hidden" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body ">
+                                    <div class="row table">
+                                    </div>
+                                    <div class="row table-top">
+                                        <div class="col-md-1  ">
+                                            &nbsp
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            METODO
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            1
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            2
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            3
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            4
+                                        </div>
+                                        <div class="col-md-1 text-center white">
+                                            &nbsp
+                                        </div>
+
+                                    </div>
+                                    <div class="row  table-line ">
+                                        <div class="col-md-1">
+                                            &nbsp
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            m
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket1_m)
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket2_m)
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket3_m)
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket4_m)
+                                        </div>
+                                        <div class="col-md-1 text-center white">
+                                            &nbsp
+                                        </div>
+                                    </div>
+                                    <div class="row table-line">
+                                        <div class="col-md-1 text-center ">
+                                            &nbsp
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            Rmf
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket1_Rmf)
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket2_Rmf)
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket3_Rmf)
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            @Html.DisplayFor(modelItem => item.picket4_Rmf)
+                                        </div>
+                                        <div class="col-md-1 text-center white">
+                                            &nbsp
+                                        </div>
+                                    </div>
+                                    <div class="row table-line">
+                                        <div class="col-md-1 text-center ">
+                                            &nbsp
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <b>Sor Prom.</b>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <b>@Html.DisplayFor(modelItem => item.sormean1)</b>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <b>@Html.DisplayFor(modelItem => item.sormean2)</b>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <b>@Html.DisplayFor(modelItem => item.sormean3)</b>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <b>@Html.DisplayFor(modelItem => item.sormean4)</b>
+                                        </div>
+                                        <div class="col-md-1 text-center ">
+                                            &nbsp
+                                        </div>
+                                    </div>
+                                    <div class="row table-line">
+                                        <div class="col-md-1 text-center ">
+
+                                        </div>
+                                        <div class="col-md-2 text-center ">
+                                            Curvas:
+                                        </div>
+                                        <div class="col-md-2 text-center capsula">
+                                            @curva[0]
+                                        </div>
+                                        <div class="col-md-2 text-center capsula">
+                                            @curva[1]
+                                        </div>
+                                        <div class="col-md-2 text-center capsula">
+                                            @curva[2]
+                                        </div>
+                                        <div class="col-md-2 text-center capsula">
+                                            @curva[3]
+                                        </div>
+                                        <div class="col-md-1 text-center text-success">
+
+                                        </div>
+                                    </div>
+                                    <span id="cuestionario-@item.id_pozo" name="cuestionario-@item.id_pozo" class="row  ml-5">
+
+                                    </span>
+
+                                </div>
+
+                               
+                                <script>
+                         
+                                var jsonData = '@Html.Raw(@item.RespuestasCuestionario1)';
+                                console.log(jsonData);
+                                var json = JSON.parse(jsonData);
+                                console.log(json);
+                                var str = "<div class='respuestas'><table>";
+                                if (json != null) {
+
+                                    for (var i = 0; i < json.length; i++) {
+                                        str=str+"<td>"+(json[i].resp === "True" ? " <icon class='fa fa-check-circle text-success fa-fw'></icon> " : " <icon class='fa fa-times-circle .text-muted fa-fw'></icon>")+"</td><td>"+json[i].enunciado+"</td></tr>";
+
+                                    }
+                                  str += "</table></div>";
+                                    console.log(str);
+                                }
+                                var obj = document.getElementById("cuestionario-@Html.Raw(item.id_pozo)").innerHTML = str;
+                                str = "";
+                                </script>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+</div>
+@section scripts{
+
+    <script src="~/Scripts/pozos_index.js"></script>
+    <script>
+        function myFunction() {
+            var which = document.getElementById("myP");
+
+            if (which.style.visibility == "visible") {
+                which.style.visibility = "hidden"
+                which.style.display = "none"
+            }
+            else {
+                which.style.visibility = "visible"
+                which.style.display = "block"
+            }
+}
+    </script>
+}
+
+

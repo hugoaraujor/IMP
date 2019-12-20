@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link href="~/Content/animate.css" rel="stylesheet" />
+</head>
+<nav class="navbar navbar-expand-lg navbar-inverse  navbar-fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar collapse navbar-collapse">
+
+
+
+        <ul class="nav navbar-nav mr-auto">
+            <li>
+                <a href="/">
+                    <img class="navbar-brand" style="width:100px;background-color:white; height:56px;  margin-top:2px; margin-top:-21px; padding-bottom:3px;" src="~/Content/Images/logo.svg" />
+                </a>
+
+            </li>
+            <li>
+                <a href="/Pozos/Metodos" class="fa fa-lock pull-left ">
+                    Pozos
+                </a>
+            </li>
+            <li>
+                <a href="/Cuestionarios/Seleccion" class="fa fa-lock">
+                    Cuestionarios
+                </a>
+            </li>
+
+
+
+        </ul>
+        <div class="sideb">
+            <ul class="navbar-nav pull-right">
+                <li>
+                    <a href="/Home/" class="fa fa-user">
+                        Admin
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/Home/" class="fa fa-sign-out ">
+                        Salir
+                    </a>
+                </li>
+
+
+
+
+            </ul>
+
+        </div>
+
+    </div>
+    <div class="pull-right">
+        <img class="pull-right" src="~/Content/Images/pitsor.png" style="width:100px; height:51px;  margin-top:3px; margin-top:14px; padding-bottom:3px;" />
+    </div>
+</nav>
+
+<body>
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+
+
+    </div>
+    <footer id="footer">
+        <p style="margin-left:50px;font-weight:300;"> &copy; @DateTime.Now.Year - <span class="impFonts">IMP</span> Instituto Mexicano del Petróleo</p>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    
+    @RenderSection("scripts", required: false)
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
+            integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="~/Scripts/Surface_chartController.js"></script>
+
+
+</body>
+</html>

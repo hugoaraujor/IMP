@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+
+<style>
+    .k-grid {
+        font-size: 10px;
+    }
+
+        .k-grid td {
+            line-height: 2em;
+        }
+
+        .k-grid .k-grid-header {
+            zoom: 1.2;
+        }
+
+        .k-grid .k-grid-content {
+            zoom: 1.2;
+        }
+
+        .k-grid .text-box {
+            color: black !important;
+        }
+
+    .ui-grid-row {
+        clear: both;
+    }
+
+    .chart_Po {
+        width: 100%;
+        height: 450px;
+        margin: 0px;
+    }
+</style>
+
+<!--Se configura la imagen inicial de fondo para esta vista-->
+<div class="row" ng-controller="Surface_chartController ">
+    <div id="test" class="col-md-12">
+
+
+        <div class="col-md-12">
+            <div class="panel panel-default panelSecundario">
+                <div class="panel-heading">
+                    <div class="panel-title-box">
+                        <h3></h3>
+
+                    </div>
+                    <ul class="panel-controls" style="margin-top: 2px;"></ul>
+
+                </div>
+                <div class="panel-body">
+
+
+
+                    <div class="row">
+                        <div id="surfacePlotDiv_Splot1" style="width:100%;height:100%"></div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+</div>
+
+@section scripts{
+    <script src="https://cdn.plot.ly/plotly-latest.js" charset="utf-8"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="my-plotly-bundle.js" charset="utf-8"></script>
+    <script>
+        $(document).ready(function () {
+
+
+            var datossurface = [
+                { x: 1, y: 1, z: 1 ,color:'#FF5676'},
+                { x: 1, y: 2, z: 4150.95 },
+                { x: 1, y: 3, z: 4250.95 },
+                { x: 1, y: 4, z: 4435.25 },
+                { x: 2, y: 1, z: 1 },
+                { x: 2, y: 2, z: 4150.952 },
+                { x: 2, y: 3, z: 4250.95 },
+                { x: 2, y: 4, z: 4435.25 },
+
+
+            ];
+
+            creaSurface(datossurface);
+
+        });
+    </script>
+
+}

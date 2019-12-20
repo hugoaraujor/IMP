@@ -1,0 +1,73 @@
+﻿@model IMPSOR.Pregunta
+
+@{
+    ViewBag.Title = "Agrega";}
+
+<h2>Agregar</h2>
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Pregunta</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("IdCase", ((Cuestionario)@ViewBag.cuestionario).IdCase)
+        @Html.Hidden("Metodo", ((Cuestionario)@ViewBag.cuestionario).Metodo)
+    <div class="form-group ">
+        @Html.Label("Pregunta/Comentarios", htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="row ml-1">
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Enunciate, new { htmlAttributes = new { @class = "form-control col-md-6" }  })
+                @Html.ValidationMessageFor(model => model.Enunciate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.Label("Condicion a Evaluar:", new { @class = "col-md-3" })
+        <div class="row ml-3">
+            @Html.DropDownListFor(model => Model.Condicioneval, new SelectList(@ViewBag.funciones, "Func", "Func"), new { @class = "col-md-3 form-control ", id = "Condicioneval", name = "Condicioneval" })
+            @Html.DropDownListFor(model => model.operador, new SelectList(@ViewBag.operadores), new { @class = "form-control col-md-1", style = "width:70px;", id = "operador", name = "operador" })
+            @Html.EditorFor(model => model.valor, new { htmlAttributes = new { @class = "form-control col-md-1", style = "width:90px;" } })
+
+        </div>
+    </div>
+
+
+
+        <div class="form-group">
+            @Html.Label("% Certeza:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExpressionSi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ExpressionSi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Categoría:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model=>model.ambito,"Seleccione",new {@class="form-control" })
+                @Html.ValidationMessageFor(model => model.ambito, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+        <div>
+        </div>
+            }
+        
+
+            @Html.ActionLink("Anterior", "Index", new { id = ((Cuestionario)@ViewBag.cuestionario).Metodo })
+        </div>
+    
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }

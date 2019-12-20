@@ -1,0 +1,107 @@
+﻿@model IEnumerable<IMPSOR.Models.Cuestionario>
+
+@{
+
+    var ext = ".png";
+    var accion = "";
+    var control = "";
+    if (@ViewBag.Title == "Cuestionarios")
+    {
+        accion = "Index";
+        control = "Preguntas";
+    }
+    else
+    {
+        accion = "Index";
+        control = "Pozos";
+    }
+}
+
+<h2>
+    @ViewBag.Title
+    @if (control == "Preguntas")
+    {
+        <span style="font-size:14px;color:lightgray;" class="pull-right"><icon class="fa fa-cog"></icon> <a href='/Home/Configurar'>Configurar</a></span>
+    }
+</h2>
+
+
+<p>
+
+</p>
+@using (Html.BeginForm(accion, control))
+{
+
+
+    <div class="row">
+        <div class="col-md-10">
+            @Html.DisplayName(" Seleccione el Método")
+          
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-2">
+
+                <button type="submit" class="btn btn-primary"  disabled id="envia" name="envia">Siguiente</button>
+                <input type="hidden" name="metodo" id="metodo" value=0 />
+                <input type="hidden" name="id" id="id" value=0 />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        
+      <icon class="fa fa-asterisk"></icon>  @Html.ActionLink(" Todos Los Métodos", "Comparativa", "Pozos")
+    </div>
+}
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class=" selboton col-md-4 ">
+            <img src='~/Content/Images/@item.Metodo@ext' />
+            @Html.DisplayFor(modelItem => item.Cuestionario_name, new { @class = "cuestionario" })
+            @Html.CheckBox("chk" + item.Metodo, false, new { @class = "checkbox pull-right" })
+        </div>
+
+
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).re
+        $(document).ready(function () {
+            $('.check:button').toggle(function () {
+                $('input:checkbox').attr('checked', 'checked');
+                $(this).val('uncheck all');
+            }, function () {
+                $('input:checkbox').removeAttr('checked');
+                $(this).val('check all');
+            })
+             $("#metodo").val(0);
+
+            $(".checkbox").change(function (data) {
+
+                var metodostr = this.name.replace('chk', '');
+                $("#metodo").val(metodostr);
+                $("#id").val(metodostr)
+                $("#envia").removeAttr('disabled');
+            });
+
+              $('#mensajealert').hide();
+            if (`@ViewBag.Mensaje`.length > 0) {
+                $('#mensajealert').show();
+                $('#mensajealert').wrapInner('<icon class="fa fa-info-circle"></icon>&nbsp' + `@ViewBag.Mensaje`);
+
+            }
+            setTimeout(function () {
+
+                $('#mensajealert').hide();
+                  }, 2000)
+        });
+
+
+
+    </script>
+}

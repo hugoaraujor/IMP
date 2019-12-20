@@ -1,0 +1,133 @@
+﻿@using PagedList.Mvc
+@using IMPSOR
+@model  IMPSOR.PozosView
+@{
+    var pozo = ((Pozo)@ViewBag.pozo);
+
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Pozos/Metodos">@ViewBag.Title</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewBag.SubTitle @Model.metodo</li>
+    </ol>
+</nav>
+
+<form id="forma" name="forma" method="post">
+
+
+    <div class="row form-row  form-group  col-auto ">
+        @Html.Label("Campo:", new { @class = "col-md-1 mr-2" })
+        @Html.DropDownListFor(m => m.campo, Model.campos, null, new { @class = "col-md-2 form-control ", id = "campo", name = "campo" })
+
+        @Html.Label("Yacimiento:", new { @class = "col-md-1 mr-2 ml-5" })
+        @Html.DropDownListFor(m => m.yacimiento, Model.yacimientos, null, new { @class = "col-md-3 form-control", id = "yacimiento", name = "yacimiento" })
+        <span class="col-md-1 ml-3">
+
+            <button type="submit" name="envia" id="envia" class="btn btn-primary pull-right">Siguiente</button>
+
+        </span>
+    </div>
+    <div class="row form-row  form-group  col-auto ">
+        @Html.LabelFor(m => m.procesados, new { @class = "col-md-1 " })
+        @Html.CheckBoxFor(m => m.procesados, new { @class = "col-md-1 " })
+
+    </div>
+    @Html.Hidden("metodo", Model.metodo)
+    @Html.Hidden("flow", 0)
+</form>
+
+<div id="divLoading" name="divLoading"><div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div></div>
+
+<table class="table">
+    <tr class="tr-gray">
+
+        <th>@Html.DisplayName("POZO") </th>
+        <th>@Html.DisplayName("Tipo yacimiento")</th>
+        <th class="col-md-2">@Html.DisplayName("Estado")</th>
+        <th>@Html.DisplayName("SOR")  </th>
+
+    </tr>
+    <tbody>
+
+        @if (Model.Detalle.Any())
+        {
+            foreach (var item in Model.Detalle)
+            {
+                string style = item.estado == "Procesado" ? "Color:Green" : "Color:LightGray";
+                string[] curva = new string[5];
+                if (item.curvas == null)
+                {
+                    curva[0] = "a"; curva[1] = "b"; curva[2] = "s"; curva[3] = "d";
+                    item.curvas = "";
+                }
+                if (item.curvas != "")
+                { curva = (item.curvas).Split(','); }
+
+                <tr>
+                    <td style="min-width:200px;width:400px" class="col-md-2">
+                        @Html.DisplayFor(modelItem => item.pozo) 
+                        
+                    </td>
+
+
+
+                    <td style="min-width:200px;" class="col-md-2 pull-left">@Html.DisplayFor(modelItem => item.tipo_yacimiento)</td>
+                    <td class="col-md-2" style="min-width:200px;">
+                        @{var linkcolor = "answered";
+
+                            if (@item.estatus != "True")
+                            {
+                                linkcolor = "notanswered";
+                            }
+
+                        }
+                        <a href="Procesar/Index/@Model.metodo/@item.id_pozo/@ViewBag.page" class="@linkcolor" 
+                           @if (item.estatus == "True") { @Html.Raw("data-toggle = 'tooltip' title = 'Cuestionario Contestado'")}>
+                            <icon class="fa fa-list-ul" ></icon>
+                        </a>
+                        <span style="@style">
+                            @if (@item.estado == "Procesado")
+                            {
+                                <icon class="fa fa-check success" data-toggle="tooltip" title="Sor Estimada"></icon>
+                            }
+                        </span>
+                        @Html.DisplayFor(modelItem => item.estado)
+
+                    </td>
+                    @{
+                        var sorvalue = item.GetType().GetProperty("sor" + Model.metodo.ToString()).GetValue(item);
+                    }
+                    <td class="col-md-6">@sorvalue   </td>
+
+                </tr>
+
+
+            
+
+            }
+
+        }
+    </tbody>
+
+</table>
+
+<center>
+    <div class="pagination">
+        @Html.PagedListPager(Model.Detalle, page => Url.Action("Index", new { page, campo = Model.campo, yacimiento = Model.yacimiento,metodo=Model.metodo }))
+    </div>
+
+</center>
+<!-- Modal -->
+
+
+@section scripts{
+    <script src="~/Scripts/pozos_index.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+}
+
+

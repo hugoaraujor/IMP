@@ -1,0 +1,103 @@
+﻿@model IMPSOR.Configuracion
+
+@{
+    ViewBag.Title = "View";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Configuracion</h4>
+    <hr />
+  
+
+    <div class="form-group">
+     
+        @Html.HiddenFor(model => model.Id)
+        @Html.Label("Enfoque", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EnumDropDownListFor(model => model.enfoqueId, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.enfoqueId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <h4>Valoraciones Previas por Método (%)</h4>
+    <hr />
+    <div class="form-group">
+        <div class="row">
+            @Html.Label("Registros Geofísicos", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Metodo1, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+
+            @Html.Label("Núcleos", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Metodo2, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+            @Html.Label("Trazadores", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Metodo3, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+        </div>
+        <br />
+        <div class="row">
+            @Html.Label("PVP", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Metodo4, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+
+            @Html.Label("Balance de Materia", htmlAttributes: new { @class = "control-label col-md-2" })
+
+
+            @Html.EditorFor(model => model.Metodo5, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+
+            @Html.Label("Registros de Producción", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Metodo6, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+        </div>
+        <h4>Categorias de Evaluacion (%)</h4>
+
+        <div class="row">
+            @Html.Label("Herramienta", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Herramienta, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+
+            @Html.Label("Operacion", htmlAttributes: new { @class = "control-label col-md-2" })
+            
+
+
+            @Html.EditorFor(model => model.Operacion, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+
+            @Html.Label("Aplicacion", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.EditorFor(model => model.Aplicacion, new { htmlAttributes = new { @class = "form-control minwidthnum " } })
+
+        </div>
+
+        <div class="row">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

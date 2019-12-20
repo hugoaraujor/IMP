@@ -1,0 +1,146 @@
+﻿@using PagedList.Mvc
+@using IMPSOR
+@model  IMPSOR.PozosView
+@{
+    var pozo = ((Pozo)@ViewBag.pozo);
+
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Pozos/Metodos">@ViewBag.Title</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewBag.SubTitle @Model.metodo</li>
+    </ol>
+</nav>
+
+<form id="forma" name="forma" method="post">
+
+
+    <div class="row form-row  form-group  col-auto ">
+        @Html.Label("Campo:", new { @class = "col-md-1 mr-2" })
+        @Html.DropDownListFor(m => m.campo, Model.campos, null, new { @class = "col-md-2 form-control ", id = "campo", name = "campo" })
+
+        @Html.Label("Yacimiento:", new { @class = "col-md-1 mr-2 ml-5" })
+        @Html.DropDownListFor(m => m.yacimiento, Model.yacimientos, null, new { @class = "col-md-3 form-control", id = "yacimiento", name = "yacimiento" })
+        <span class="col-md-1 ml-3">
+
+            <button type="submit" name="envia" id="envia" class="btn btn-primary pull-right">Siguiente</button>
+
+        </span>
+    </div>
+    <div class="row form-row  form-group  col-auto ">
+        @Html.LabelFor(m => m.procesados, new { @class = "col-md-1 " })
+        @Html.CheckBoxFor(m => m.procesados, new { @class = "col-md-1 " })
+
+    </div>
+    @Html.Hidden("metodo", Model.metodo)
+    @Html.Hidden("flow", 0)
+</form>
+
+<div id="divLoading" name="divLoading"><div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div></div>
+
+<table class="table">
+    <tr class="tr-gray">
+
+        <th>@Html.DisplayName("POZO") </th>
+        <th>So<SUB>Reg</SUB></th>
+        <th class="col-md-2"></th>
+        <th>So<SUB>Nucl.</SUB>  </th>
+        <th class="col-md-2"></th>
+        <th>So<SUB>Traz.</SUB>  </th>
+        <th class="col-md-2"></th>
+        <th>So<SUB>PVP</SUB>  </th>
+        <th class="col-md-2"></th>
+        <th>So<SUB>Bal.</SUB> </th>
+        <th class="col-md-2"></th>
+        <th>So<SUB>Prod.</SUB> </th>
+        <th> </th>
+        <th>Sor  </th>
+        <th>Conf  </th>
+    </tr>
+    <tbody>
+
+        @if (Model.Detalle.Any())
+        {
+            foreach (var item in Model.Detalle)
+            {
+        
+        <tr>
+            <td style="min-width:200px;width:200px" class="col-md-2">
+                @Html.DisplayFor(modelItem => item.pozo)
+
+            </td>
+
+
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor1)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad1)%
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor2)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad2)%
+            </td>
+
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor3)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad3)%
+            </td>
+
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor4)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad4)%
+            </td>
+
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor5)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad5)%
+            </td>
+
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor6)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad6)%
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.sor)
+            </td>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => item.Confiabilidad)%
+            </td>
+        </tr>
+
+
+            
+
+            }
+
+        }
+    </tbody>
+
+</table>
+
+<center>
+    <div class="pagination">
+        @Html.PagedListPager(Model.Detalle, page => Url.Action("Index", new { page, campo = Model.campo, yacimiento = Model.yacimiento,metodo=Model.metodo }))
+    </div>
+
+</center>
+<!-- Modal -->
+
+
+@section scripts{
+    <script src="~/Scripts/pozos_index.js"></script>
+
+}
+
+
