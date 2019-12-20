@@ -49,7 +49,7 @@ namespace IMPSOR
                               join h in db.rel_campo_yacimiento_pozo on d.id_pozo equals h.id_pozo
                               join i in db.cat_yacimiento on h.id_yacimiento equals i.id_yacimiento
                               where i.id_yacimiento == yacimiento && i.id_campo == campo
-                              select new GraphData2View() { x = b.x, y = Convert.ToInt32(b.y), z = Convert.ToInt32(c.profIni), color = getGraphDotColor(e.sor1 / 100), pname = d.pozo, percentage = Convert.ToDouble(e.GetType().GetProperty("sor" + metodo.ToString()).GetValue(e).ToString()) * 100 };
+                              select new GraphData2View() { x = b.x, y = Convert.ToInt32(b.y), z = Convert.ToInt32(c.profIni), color = getGraphDotColor(Math.Round(Convert.ToDecimal(e.GetType().GetProperty("sor" + metodo.ToString()).GetValue(e).ToString()), 2) ), pname = d.pozo, percentage = Math.Round(Convert.ToDouble(e.GetType().GetProperty("sor" + metodo.ToString()).GetValue(e)), 2) * 100 };
 
                 }
                 catch { }
@@ -67,9 +67,11 @@ namespace IMPSOR
         
         public static  string getGraphDotColor(decimal? valor)
         {
+            if (valor <= 0)
+                valor = 0.01M;
             string retorno = "";
-            int percent = Convert.ToInt16(Math.Floor(((valor.Value*100)*6)/100))+1;
-            retorno = (ColorGradients[6 - (percent -1)]);
+            int percent = Convert.ToInt16(Math.Floor(((valor.Value*100)*6)/100));
+            retorno = (ColorGradients[6 - (percent)]);
             return retorno;
         }
         
