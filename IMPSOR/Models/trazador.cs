@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace IMPSOR.Models
+namespace IMPSOR
 {
+
     [Table("trazadores")]
     public class trazador
     {

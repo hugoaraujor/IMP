@@ -11,35 +11,35 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Pregunta</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.IdQuestion)
-    @Html.HiddenFor(model => model.Metodo, ((Cuestionario)@ViewBag.cuestionario).Metodo)
-    @Html.Hidden("IdCase", ((Cuestionario)@ViewBag.cuestionario).IdCase)
+    <div class="form-horizontal">
+        <h4>Pregunta</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdQuestion)
+        @Html.HiddenFor(model => model.Metodo, ((Cuestionario)@ViewBag.cuestionario).Metodo)
+        @Html.Hidden("IdCase", ((Cuestionario)@ViewBag.cuestionario).IdCase)
 
-    @Html.HiddenFor(model => model.idPregunta)
+        @Html.HiddenFor(model => model.idPregunta)
 
-    <div class="form-group">
-        @Html.Label("Pregunta", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Enunciate, new { htmlAttributes = new { @class = "form-control col-md-6" } })
-            @Html.ValidationMessageFor(model => model.Enunciate, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Pregunta", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Enunciate, new { htmlAttributes = new { @class = "form-control col-md-6" } })
+                @Html.ValidationMessageFor(model => model.Enunciate, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group ml-4">
-        @Html.Label("Condicion a Evaluar:", new { @class = "col-md-3" })
-        <div class="row">
-            @Html.DropDownListFor(model => Model.Condicioneval, new SelectList(@ViewBag.funciones, "Func", "Func"), new { @class = "col-md-3 form-control ", id = "Condicioneval", name = "Condicioneval" })
-            @Html.DropDownListFor(model => model.operador, new SelectList(@ViewBag.operadores), new { @class = "form-control col-md-1", style = "width:70px;", id = "operador", name = "operador" })
-            @Html.EditorFor(model => model.valor, new { htmlAttributes = new { @class = "form-control col-md-1", style = "width:90px;" } })
+        <div class="form-group ml-4">
+            @Html.Label("Condicion a Evaluar:", new { @class = "col-md-3" })
+            <div class="row">
+                @Html.DropDownListFor(model => Model.Condicioneval, new SelectList(@ViewBag.funciones, "Func", "Func"), new { @class = "col-md-3 form-control ", id = "Condicioneval", name = "Condicioneval" })
+                @Html.DropDownListFor(model => model.operador, new SelectList(@ViewBag.operadores), new { @class = "form-control col-md-1", style = "width:70px;", id = "operador", name = "operador" })
+                @Html.EditorFor(model => model.valor, new { htmlAttributes = new { @class = "form-control col-md-1", style = "width:90px;" } })
 
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
     <div class="form-group">
         @Html.Label(" % Certeza", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">

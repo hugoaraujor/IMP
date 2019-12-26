@@ -164,7 +164,6 @@
     <Compile Include="Models\Configuracion.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Funciones.cs" />
-    <Compile Include="Models\Models.cs" />
     <Compile Include="Models\Pozo_Seleccion.cs" />
     <Compile Include="Models\PozosView.cs" />
     <Compile Include="Models\PozosViewDetail.cs" />

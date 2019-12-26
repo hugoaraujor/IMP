@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using IMPSOR;
-using IMPSOR.Models;
 using PagedList;
 namespace IMPSOR.Controllers
 {
