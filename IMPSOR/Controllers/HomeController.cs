@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IMPSOR.Servicios;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace IMPSOR.Controllers
             var sumapartes = Convert.ToDecimal(datamodel.Aplicacion) + Convert.ToDecimal(datamodel.Herramienta) + Convert.ToDecimal(datamodel.Operacion);
 
 
-
+          
             if ((!ModelState.IsValid) || sumapartes < 0 || sumapartes != 100)
             {
 

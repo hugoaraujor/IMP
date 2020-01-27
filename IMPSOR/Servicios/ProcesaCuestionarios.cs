@@ -1,4 +1,5 @@
 ﻿
+using IMPSOR.Servicios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace IMPSOR
 
 
 
-            var detalles = db.GetPozos(idcampo, idyacimiento).Where(w => w.sor1 != null);
+            var detalles = db.GetPozos(idcampo, idyacimiento).Where(w => w.sormean1 != null);
             var idpozo = 0;
             if (detalles.Count() > 0)
             {
@@ -41,38 +42,32 @@ namespace IMPSOR
                     string curvastr = db.GetCurvasStr(p.id_pozo);
                     idpozo = p.id_pozo;
                     object result = null;
-
+                    var newrecord = new ResultadoCuestionario();
+                    var update=action.Update;
                     if (reg == null)
                     {
-                        var newrecord = new ResultadoCuestionario();
+                        update = action.Add;
                         newrecord.IdPozo = p.id_pozo;
-
                         var en = result;
                         if (metodo == 1)
                         {
                             newrecord.curvas = curvastr;
 
                         }
-                        AddNewRecord(metodo, newrecord, action.Add);
+                        updateRecord(metodo, newrecord, update);
                         reg = db.ResultadoCuestionarios.Where(w => w.IdPozo == p.id_pozo).FirstOrDefault();
 
                     }
                     else
                     {
-                        var newrecord = db.ResultadoCuestionarios.Find(reg.IdRC);
+                        newrecord = db.ResultadoCuestionarios.Find(reg.IdRC);
                         var dn = result;
-
                         if (metodo == 1)
                         {
                             newrecord.curvas = curvastr;
                         }
-                        updateRecord(metodo, newrecord, action.Update);
-
+                        updateRecord(metodo, newrecord,update);
                     }
-
-
-
-
                     //Cuestionario
                     var cuestionarios = db.Cuestionarios.Where(w => w.Metodo == metodo).ToList();
                     var compare = new Comparaciones.Solve();
@@ -255,41 +250,13 @@ namespace IMPSOR
         private void updateRecord(int? metodo, ResultadoCuestionario newrecord, action actionUpd)
         {
 
-            switch (metodo)
+            decimal sor=MethodProvider.Get(metodo.Value).getSor(newrecord.IdPozo);
+            newrecord.GetType().GetProperty("sor" + (metodo).ToString()).SetValue(newrecord,sor);
+     
+            if (actionUpd == action.Add)
             {
-                case 1:
-                    result1 = db.GetResults().ToList().Where(w => w.PozoId == newrecord.IdPozo).FirstOrDefault();
-
-                    var sorresultindex = SeleccionarSorReg(ref result1);
-                    var SorVar = "sor" + metodo.ToString();
-                    var sorseleccionada = newrecord.GetType().GetProperty(SorVar);
-                    if (result1 != null)
-                        newrecord.sor1 = Convert.ToDecimal(result1.GetType().GetProperty("sormean" + (sorresultindex + 1).ToString()).GetValue(result1));
-                    else
-                        newrecord.sor1 = 0;
-
-                    newrecord.included = true;
-                    db.ResultadoCuestionarios.Attach(newrecord);
-                    break;
-                case 2:
-                    resultm2 = (from a in db.dat_NucleosPozos where a.id_pozo == newrecord.IdPozo select a).SingleOrDefault();
-                    newrecord.sor2 = 0;
-                    newrecord.included = true;
-
-                    if (resultm2 != null)
-                        newrecord.sor2 = Convert.ToDecimal(resultm2.So);
-
-                    break;
-                case 3:
-                    resultm3 = (from a in db.trazadores where a.PozoId == newrecord.IdPozo select a).FirstOrDefault();
-                    newrecord.sor3 = 0;
-                    newrecord.included = true;
-
-                    if (resultm3 != null)
-                        newrecord.sor3 = Convert.ToDecimal(resultm3.sor);
-
-                    break;
-
+                newrecord.included = true;
+                db.ResultadoCuestionarios.Add(newrecord);
             }
             if (actionUpd == action.Update)
             {
@@ -300,86 +267,12 @@ namespace IMPSOR
             db.SaveChanges();
 
         }
-        private void AddNewRecord(int? metodo, ResultadoCuestionario newrecord, action actionUpd)
-        {
-
-            switch (metodo)
-            {
-                case 1:
-                    result1 = db.GetResults().ToList().Where(w => w.PozoId == newrecord.IdPozo).FirstOrDefault();
-                    var sorresultindex = SeleccionarSorReg(ref result1);
-                    var SorVar = "sor" + metodo.ToString();
-                    var sorseleccionada = newrecord.GetType().GetProperty(SorVar);
-                    if (result1 != null)
-                        newrecord.sor1 = Convert.ToDecimal(result1.GetType().GetProperty("sormean" + (sorresultindex + 1).ToString()).GetValue(result1));
-                    else
-                        newrecord.sor1 = 0;
-                    db.ResultadoCuestionarios.Add(newrecord);
-                    db.SaveChanges();
-                    break;
-                case 2:
-                    resultm2 = (from a in db.dat_NucleosPozos where a.id_pozo == newrecord.IdPozo select a).SingleOrDefault();
-                    newrecord.sor2 = Convert.ToDecimal(resultm2.So);
-                    break;
-                case 3:
-                    resultm3 = (from a in db.trazadores where a.PozoId == newrecord.IdPozo select a).FirstOrDefault();
-                    newrecord.sor3 = 0;
-                    newrecord.included = true;
-                    if (resultm3 != null)
-                        newrecord.sor3 = Convert.ToDecimal(resultm3.sor);
-
-                    break;
-            }
-            if (actionUpd == action.Add)
-            {
-                newrecord.included = true;
-                db.ResultadoCuestionarios.Add(newrecord);
-            }
-
-
-            db.SaveChanges();
-
-        }
+        
         private string addlog(string enunciate, bool v)
         {
             return "{'enunciado':'" + enunciate + "','resp':'" + v.ToString() + "'},";
         }
 
-        public int SeleccionarSorReg(ref RegistroResultado registro)
-        {
-            decimal promedio = 0;
-            int finalindex = 1;
-            if (registro != null)
-            {
-                promedio = Convert.ToDecimal((registro.sormean1 == null ? 0 : registro.sormean1 + registro.sormean2 == null ? 0 : registro.sormean2 + (registro.sormean3 == null ? 0 : registro.sormean3) + (registro.sormean4 == null ? 0 : registro.sormean4) / 4));
-                //calculo min diferencia con el promedio
-                List<decimal> diferencias = new List<decimal>();
-                if (registro.sormean1 == null)
-                    registro.sormean1 = 0;
-
-                if (registro.sormean2 == null)
-                    registro.sormean2 = 0;
-
-                if (registro.sormean3 == null)
-                    registro.sormean3 = 0;
-
-                if (registro.sormean4 == null)
-                    registro.sormean4 = 0;
-
-                diferencias.Add(Math.Abs(promedio - Convert.ToDecimal(registro.sormean1.Value)));
-                diferencias.Add(Math.Abs(promedio - Convert.ToDecimal(registro.sormean2.Value)));
-                diferencias.Add(Math.Abs(promedio - Convert.ToDecimal(registro.sormean3.Value)));
-                diferencias.Add(Math.Abs(promedio - Convert.ToDecimal(registro.sormean4.Value)));
-                decimal minvalue = diferencias.Min();
-
-                decimal result = diferencias.Min<decimal>();
-                finalindex = diferencias.IndexOf(result);
-
-            }
-
-
-
-            return finalindex;
-        }
+   
     }
 }

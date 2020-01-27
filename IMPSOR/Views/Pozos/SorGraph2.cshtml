@@ -1,4 +1,4 @@
-﻿@model  IMPSOR.Models.GraphJson
+﻿@model  IMPSOR.GraphJson
 @{
     ViewBag.Title = "Grafico Sor - Registros";
 }
@@ -6,10 +6,6 @@
 <h3>Campo @Model.Titulo</h3>
 <h3>Yacimiento @Model.Subtitulo</h3>
 <p>
-    @{
-        Model.Jsoncadena = Model.Jsoncadena.Replace("[", "");
-        Model.Jsoncadena = Model.Jsoncadena.Replace("]", "");
-    }
 
 
     <div id="container" class="container" style="width:100%;height:100%">
@@ -17,23 +13,25 @@
     </div>
     <center>
 
-            <img src="~/Content/Images/colorbar.png"  style="z-index:10;height:20%;width:23%;"/>
+        <img src="~/Content/Images/colorbar.png" style="z-index:10;height:20%;width:23%;" />
 
     </center>
-@section scripts{
-    @*<script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script src="https://code.highcharts.com/modules/export-data.js"></script>*@
-    <script src="~/Scripts/highcharts.js"></script>
-    <script src="~/Scripts/highcharts-3d.js"></script>
-    <script src="~/Scripts/exporting.js"></script>
-    <script src="~/Scripts/export-data.js"></script>
-    <script src="~/Scripts/boost.js"></script>
-    <script>
+    @section scripts{
+        @*<script src="https://code.highcharts.com/highcharts.js"></script>
+            <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+            <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <script src="https://code.highcharts.com/modules/export-data.js"></script>*@
+        <script src="~/Scripts/highcharts.js"></script>
+        <script src="~/Scripts/highcharts-3d.js"></script>
+        <script src="~/Scripts/exporting.js"></script>
+        <script src="~/Scripts/export-data.js"></script>
+        <script src="~/Scripts/boost.js"></script>
+        <script src="https://code.highcharts.com/modules/boost.js"></script>
+        <script>
 
-            var data = [@Html.Raw(@Model.Jsoncadena)];
-               var data2 = [@Html.Raw(@Model.Jsoncadena)];
+            var data = @Html.Raw(@Model.Jsoncadena);
+
+
         var chart = new Highcharts.Chart({
         chart: {
         renderTo: 'container',
@@ -90,11 +88,12 @@
     tooltip: {
         pointFormat: 'Pozo:{point.pname}<br>x:{point.x}<br>y:{point.y}<br>z:{point.z}<br>Sor: {point.percentage}%'
     },
-    series: [{
+  series: [{
         name: data.pname,
         colorByPoint: true,
-         boostThreshold: 1,
-      lineWidth: 0,
+        boostThreshold: 1,
+       turboThreshold: 10000,
+        lineWidth: 0,
           marker: {
               radius: 7,
               lineWidth: 0,
@@ -176,6 +175,6 @@
 
             return Math.min.apply(Math, data.map(function (o) { return o.z; }));
         }
-    </script>
+        </script>
 
-}
+    }

@@ -83,5 +83,9 @@ namespace IMPSOR
         public string RespuestasCuestionario4 { get; set; }
         public string RespuestasCuestionario5 { get; set; }
         public string RespuestasCuestionario6 { get; set; }
+        public string x_sup { get; set; }
+        public string y_sup { get; set; }
+        public double? profIni { get; set; }
+        public decimal? numsor { get; set; }
     }
 }

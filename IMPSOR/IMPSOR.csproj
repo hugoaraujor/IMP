@@ -147,6 +147,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PozosController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />
+    <Compile Include="Interfaces\IMetodos.cs" />
+    <Compile Include="Models\datos_metodos_PVP.cs" />
+    <Compile Include="Models\dat_balance_materia.cs" />
+    <Compile Include="Models\dat_sor_pozo.cs" />
     <Compile Include="Servicios\Extensions.cs" />
     <Compile Include="Servicios\funciones.cs" />
     <Compile Include="Global.asax.cs">
@@ -175,8 +179,16 @@
     <Compile Include="Models\respuestasPozo.cs" />
     <Compile Include="Models\ResultadoCuestionario.cs" />
     <Compile Include="Models\trazador.cs" />
+    <Compile Include="Servicios\MethodProvider.cs" />
+    <Compile Include="Servicios\Metodo1.cs" />
+    <Compile Include="Servicios\Metodo2.cs" />
+    <Compile Include="Servicios\Metodo3.cs" />
+    <Compile Include="Servicios\Metodo4.cs" />
+    <Compile Include="Servicios\Metodo5.cs" />
+    <Compile Include="Servicios\Metodo6.cs" />
     <Compile Include="Servicios\ProcesaCuestionarios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\SeleccionaSor.cs" />
     <Compile Include="Servicios\Services.cs" />
     <Compile Include="Controllers\ProcesarController.cs" />
   </ItemGroup>

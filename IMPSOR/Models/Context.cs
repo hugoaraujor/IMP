@@ -1,4 +1,5 @@
 ﻿
+using IMPSOR.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -31,7 +32,11 @@ namespace IMPSOR
         public virtual DbSet<trazador> trazadores { get; set; }
         public virtual DbSet<dat_NucleosPozo> dat_NucleosPozos { get; set; }
         public DbSet<RespuestasPozo> respuestasPozos { get; set; }
-      
+        public virtual DbSet<dat_Datos_metodo_PVP_Resultado> dat_Datos_metodo_PVP_Resultado { get; set; }
+        public virtual DbSet<dat_Datos_metodo_PVP> dat_Datos_metodo_PVP { get; set; }
+        public virtual DbSet<dat_balanace_Materia> dat_balanace_Materia { get; set; }
+        public virtual DbSet<dat_sor_pozo> dat_sor_pozo { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             Database.SetInitializer<DataContext>(null);
@@ -105,7 +110,7 @@ namespace IMPSOR
             return resp;
         }
         //SP_Q_Campo_Yacimiento_Coordenadas
-            public virtual DbRawSqlQuery<GraphData2View> GetResultsGraphData(int? camposel, int? yac_id,int? sor)
+            public virtual DbRawSqlQuery<GraphData2View> GetResultsGraphData(int? camposel, int? yac_id)
         {
             var db = this;
             
@@ -119,13 +124,11 @@ namespace IMPSOR
                 ParameterName = "yacid",
                 Value = yac_id
             };
-            var sors = new SqlParameter
-            {
-                ParameterName = "selsor",
-                Value = sor
-            };
-            var resp =db.Database.SqlQuery<GraphData2View>("SP_Q_Campo_Yacimiento_Coordenadas @campoid,@yacid,@selsor ", @idParam, @yac,@sors);
+            
+            var resp =db.Database.SqlQuery<GraphData2View>("SP_Q_Campo_Yacimiento_Coordenadas @campoid,@yacid ", @idParam, @yac);
             return resp;
         }
     }
 }
+
+
