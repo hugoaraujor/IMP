@@ -73,7 +73,15 @@ namespace IMPSOR
            if (valor <= 0)
              valor = 0.01M;
            string retorno = "";
-           int percent = Convert.ToInt16(Math.Floor((valor.Value))  * 6) / 100;
+            int percent = 0;
+            try
+            {
+                percent = Convert.ToInt16(Math.Floor((valor.Value)) * 6) / 100;
+            }
+            catch
+            { 
+            
+            }
            retorno = (ColorGradients[6 - (percent)]);
            return retorno;
         }
