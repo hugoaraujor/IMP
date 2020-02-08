@@ -178,7 +178,7 @@ namespace IMPSOR.Controllers
             var coordsource = Services.Getgraphdata2(campo, yacimiento, metodo).ToList().OrderBy(o=>o.pname);
             foreach (GraphData2View g in coordsource)
             {
-                g.percentage = Math.Round(((g.percentage == null ? 0 : g.percentage) * 100), 2);
+                g.percentage = Math.Round(( g.percentage * 100), 2);
                 g.color = Services.getGraphDotColor(Convert.ToDecimal(g.percentage));
                
             }
